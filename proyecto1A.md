@@ -14,7 +14,7 @@ header-includes:
 
 # Resumen
 
-El ordenamiento es uno de los bloques más básicos para la creación de algoritmos más complejos en los cuales precisamente el tiempo que te tome ordenar tu información puede llegar a ser vital. En este trabajo analizamos los algoritmos **Bubble Sort, Quick Sort, Radix Sort, Heapsort** y **Mergesort**.
+El ordenamiento es uno de los bloques elementales para la creación de algoritmos más complejos. Para el desarrollo de estos algoritmos, el tiempo que te tome ordenar tu información puede llegar a ser vital. En este trabajo analizamos los algoritmos **Bubble Sort, Quick Sort, Radix Sort, Heapsort** y **Mergesort**.
 
 # Heapsort
 
@@ -313,7 +313,7 @@ De esta manera podemos continuar dividiendo (recursivamente) las tuplas resultan
 
 Teniendo en cuenta todo lo anteriormente definido podemos definir las llamadas recursivas de la siguiente manera
 
-$$T(n)=2T(\frac{n}{2})+c\cdot n$$
+$$T(n)=T(\frac{n}{2})+T(\frac{n}{2})+c\cdot n=2T(\frac{n}{2})+c\cdot n$$
 
 Donde $c$ es una constante que define el tiempo que toma nuestra operación elemental, la comparación. Representando nuestra función recursiva en un árbol (Fig 2.2) de llamadas podemos comenzar a ver la complejidad
 
