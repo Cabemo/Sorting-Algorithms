@@ -1,6 +1,7 @@
 ---
-title: "Análisis y diseño de algoritmos: Proyecto final"
-author: "Emilio E. G. Cantón Bermúdez y Roberto Gervacio Guendulay"
+title: Análisis y diseño de algoritmos \break Proyecto final
+author: Emilio E. G. Cantón Bermúdez \and Roberto Gervacio Guendulay
+points: 12pts
 date: 09/05/2019
 header-includes:
 	- \usepackage{tikz}
@@ -17,7 +18,7 @@ El ordenamiento es uno de los bloques más básicos para la creación de algorit
 
 # Heapsort
 
-De acuerdo con (Srini Devadas)[https://www.youtube.com/watch?v=B7hVxCmfPtM&t=2641s], un *heap* es una implementacióna de la estructura de datos abstracta, *priority queue*. En general el objetivo, tal como es definido en *priority queue*, es poder **insertar una llave**, **remover el valor máximo** (tomando en cuenta un tipo de comparación indefinida). Un *heap* lo que logra es implementar la manera más eficiente de cumplir estos requisitos al aplicar un árbol binario semi-completo.
+De acuerdo con [Srini Devadas](https://www.youtube.com/watch?v=B7hVxCmfPtM&t=2641s), un *heap* es una implementacióna de la estructura de datos abstracta, *priority queue*. En general el objetivo, tal como es definido en *priority queue*, es poder **insertar una llave**, **remover el valor máximo** (tomando en cuenta un tipo de comparación indefinida). Un *heap* lo que logra es implementar la manera más eficiente de cumplir estos requisitos al aplicar un árbol binario semi-completo.
 
 Comenzamos considerando un arreglo de números (llaves)
 
@@ -368,7 +369,7 @@ Donde $c$ es una constante que define el tiempo que toma nuestra operación elem
 
 Como podemos observar se forma las siguiente sumatoria
 
-$$n+\frac{n}{2}+\frac{n}{2}^2+\frac{n}{4}+\frac{n}{4}+\frac{n}{4}+\frac{n}{4}_4+\cdots+\overbrace{1+1+1+1+1+\cdots+1}^n$$
+$$n+\frac{n}{2}+\frac{n}{2}+\frac{n}{4}+\frac{n}{4}+\frac{n}{4}+\frac{n}{4}+\cdots+\overbrace{1+1+1+1+1+\cdots+1}^n$$
 $$=n+2\cdot \frac{n}{2}+4\cdot \frac{n}{4}+\cdots+n\cdot 1$$
 $$=n+\frac{2n}{2}+\frac{4n}{4}+\cdots+n\cdot 1$$
 $$=\overbrace{n+n+n+\cdots+n}^{\log_2(n) + 1}$$
@@ -378,3 +379,107 @@ $$=O(n\log_2(n))$$
 
 [^3]: *Definida matemáticamente como una lista ordenada de elementos (en este caso números)*
 [^4]: *Tomamos $n/2$ como una división entera tal que si $n=2m+q\Rightarrow \frac{n}{2}=m$*
+
+\newpage
+
+# Radix Sort
+
+Este es un algoritmo que se basa en el funcionamiento de **counting sort** por lo que obtiene las ventajas de este, como no requerir de la comparación entre números (lo cuál lo hace el mejor para ordenar número de longitud fija) y ser estable (no cambia la posición de los elementos de entrada). Para poder analizar la complejidad es necesario entender la complejidad de counting sort.
+
+Dado un arreglo $A | A_i \in \mathbb{N}$ de tamaño $n$ debemos contar las veces en las que aparece cada valor único (llave) en el. Para eso nos ayudaremos de un arreglo auxiliar $C$. Ya que solo nos importa guardar los valores únicos podemos aproximar el tamaño de $C$ como:
+
+\begin{center}
+ Sea $k = \max\{A\}$ \break
+ Entonces |C| = k
+\end{center}
+
+Por ejemplo, supongamos que $A = [1, 4, 1, 7, 1, 7, 10, 3, 1]$, entonces $k = 10$, por lo que el tamaño de nuestro arreglo $|C| = 10$
+
+De esta forma estamos creando un espacio para cada posible llave en $A$.
+Parece intuitivo ver que entre menor sea la diferencia entre las llaves de $A$ este algoritmo tiene un comportamiento favorable y evita el desperdicio de memoria.
+
+Ya que no hacemos la comparación entre los números podemos definir la operación básica como la iteración sobre el arreglo $A$ para construir el arreglo auxiliar $C$
+
+\begin{center}
+ $\displaystyle\sum_{i=1}^{n} C_{A_i} = C_{A_i} + 1 $ 
+\end{center}
+
+Lo anterior se hizo $n$ veces por lo que hasta ahora la complejidad parece ser $O(n)$. Sin embargo aún no hemos terminado, apenas hemos construido nuestro arreglo $C$ para poder ordenar $A$.
+
+Para nuestro ejemplo $C = [3, 0, 1, 1, 0, 0, 2, 0, 0, 1]$
+
+El siguiente paso es iterar sobre $C$ y así obtener $A$ ordenado, es decir:
+
+\begin{center}
+ $\displaystyle\sum_{i=1}^{k} C_i$
+\end{center}
+
+Donde el valor en $C_i$ nos dira el número de veces que $i$ se repitió. Como el tamaño de $C$ fue definido por $k$, entonces la complejidad de esta segundo paso fue $O(k)$.
+
+Para nuestro ejemplo podemos decir que si $i = 1$, entonces $C_i = 3$, lo cual se interpreta como que existe $3$ veces el número $1$, seguido de $1$ vez el número $3$, es decir:
+
+\begin{center}
+ $[1, 1, 1, 3, 4, 7, 7, 10]$
+\end{center}
+
+Nos damos cuenta que obtener el resultado nos llevo:
+
+\begin{center}
+ $O(n + k)$
+\end{center}
+
+iteraciones. Donde si $k$ fuera muy pequeño tendriamos un tiempo lineal.
+
+Ahora podemos seguir con el análisis de **radix sort**. Existen dos variantes de este algoritmo:
+
+- Usar las cifra más significativa
+- Usar las cifra menos significativa
+
+Comunmente se utiliza la cifra menos significativa, lo cual se traduce a pasar por cada número de derecha a izquierda. Entonces si definimos a $D | D_i \in \mathbb{N}$ tenemos que ordenar digito a digito cada $D_i$, esto lo podemos hacer con **countig sort**. 
+
+Por ejemplo, sea $D = [53, 12, 11, 634, 89]$
+
+Sea $m$ el número de iteraciones sobre $D$
+
+\begin{center}
+ $m = $ mayor número de digitos en $D$
+\end{center}
+
+para nuestro ejemplo $m = 3$ y en la primer iteracion de $m$, es decir $m = 1$ nos fijaremos en los útlimos digitos:
+
+\begin{center}
+ $3 \leftarrow 5\mathbf{3}$ \break
+ $2 \leftarrow 1\mathbf{2}$ \break
+ $1 \leftarrow 1\mathbf{1}$ \break
+ $4 \leftarrow 63\mathbf{4}$ \break
+ $9 \leftarrow 8\mathbf{9}$ \break
+\end{center}
+
+Ahora con estos digitos y con ayuda de **counting sort** obtendriamos $[0, 1, 2, 3, 4, 0, 0, 0, 0, 1]$ pero cada uno de esos digitos en realidad es una referencia al numero completo, por lo que nuestra lista actual $D = [11, 12, 53, 634, 89]$. Debemos repetir esto hasta acabar con las iteraciones de $m$.
+
+\begin{center}
+ $m = 2$ \break
+ $1 \leftarrow \mathbf{1}1$ \break
+ $1 \leftarrow \mathbf{1}2$ \break
+ $5 \leftarrow \mathbf{5}3$ \break
+ $3 \leftarrow 6\mathbf{3}4$ \break
+ $8 \leftarrow \mathbf{8}9$ \break \break
+ $D = [11, 12, 634, 53, 89]$ \break \break
+ $m = 3$ \break
+ $0 \leftarrow 11$ \break
+ $0 \leftarrow 12$ \break
+ $0 \leftarrow 53$ \break
+ $6 \leftarrow \mathbf{6}34$ \break
+ $0 \leftarrow 89$ \break \break
+ $D = [11, 12, 53, 89, 634]$
+\end{center}
+
+Cabe resaltar que podemos tomar como $0$, los digitos que nos hagan falta.
+
+Lo anterior fue hecho $m$ veces es decir $O(m)$ pero en cada de una de esas $m$ veces llamamos a **counting sort** es decir $O(m (n + k))$. Cabe resaltar que ese número $k$ en realidad estará definido por la base de los número actuales en $D$, por ejemplo como los números en $D$ eran de base $10$, $k$ para counting sort siempre fue $10$. Por lo que la complejidad de **radix sort** queda definida como:
+
+\begin{center}
+ $O(m(n + b))$
+\end{center}
+
+Donde $m$ es el máximo número de digitos, $n$ el tamaño del arreglo y $b$ la base de los números en el arreglo.
