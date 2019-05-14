@@ -401,7 +401,7 @@ Parece intuitivo ver que entre menor sea la diferencia entre las llaves de $A$ e
 Ya que no hacemos la comparación entre los números podemos definir la operación básica como la iteración sobre el arreglo $A$ para construir el arreglo auxiliar $C$
 
 \begin{center}
- $\displaystyle\sum_{i=1}^{n} C_{A_i} = C_{A_i} + 1 $ 
+ $C_{A_i} = C_{A_i} + 1 $ , $n$ veces
 \end{center}
 
 Lo anterior se hizo $n$ veces por lo que hasta ahora la complejidad parece ser $O(n)$. Sin embargo aún no hemos terminado, apenas hemos construido nuestro arreglo $C$ para poder ordenar $A$.
@@ -411,7 +411,7 @@ Para nuestro ejemplo $C = [3, 0, 1, 1, 0, 0, 2, 0, 0, 1]$
 El siguiente paso es iterar sobre $C$ y así obtener $A$ ordenado, es decir:
 
 \begin{center}
- $\displaystyle\sum_{i=1}^{k} C_i$
+ $C_i$ , $k$ veces
 \end{center}
 
 Donde el valor en $C_i$ nos dira el número de veces que $i$ se repitió. Como el tamaño de $C$ fue definido por $k$, entonces la complejidad de esta segundo paso fue $O(k)$.
@@ -483,3 +483,40 @@ Lo anterior fue hecho $m$ veces es decir $O(m)$ pero en cada de una de esas $m$ 
 \end{center}
 
 Donde $m$ es el máximo número de digitos, $n$ el tamaño del arreglo y $b$ la base de los números en el arreglo.
+
+\newpage
+
+# Bubble Sort
+
+En general la idea de **bubble sort** es llevar los elementos más grandes hacia un lado y los más pequeños hacia el otro. Por lo que este si es un algortimo basado en la comparación podemos contar a las comparaciones como operación básica.
+
+Dado un arreglo $A | A_i \in \mathbb{R}$, en el primer paso se posiciona en el primer elemento para compararlo con el que este adelante de el y recorre todo el arreglo hasta $N-1$ (porque el $n$-ésimo elemento ya no tiene con quien hacer una comparacion) realizando intercambios.
+
+Después de la primer recorrida quedará garantizado que el último elemento es el mayor o menor en la lista, por lo que ya no es necesario compararlo de nuevo. Así la siguiente iteración solo debera llegar hasta $N - 2$, continuando con la examinación **bubble sort** puede quedar de la siguiente manera:
+
+\begin{center}
+$A_0, ..., A_i,$ $\xrightarrow[\text{}]{\text{?}}$$,A_{i+1}, A_{n-i-1}$
+\end{center}
+
+Por ejemplo $A = [3,1,7,11,5]$
+
+\begin{center}
+$3 \xrightarrow[\text{}]{\text{?}}1$ \break
+$1,3 \xrightarrow[\text{}]{\text{?}}7$ \break
+$1,3,11 \xrightarrow[\text{}]{\text{?}}7$ \break
+$1,3,7,11 \xrightarrow[\text{}]{\text{?}}5$ \break
+$1,3, 7, 5, 11$
+\end{center}
+
+El número de comparaciones se obtiene $N -1$ en este caso $4$, si queremos obtener el número total. 
+
+\begin{center}
+$N -1 + N -2 + ... + N - (N - 1) =$ \break
+Lo anterior puede ser visto como: \break
+$N - (N - 1) + N - (N - 2) + N - (N - 3) + ... + N - 1=$ \break
+$1 + 2 + 3 ... + N - 1 = $ \break
+
+Lo anterior termina convirtiendose en : \break
+
+$\displaystyle\sum_{i=0}^{n - 1} i = \frac{n (n - 1)}{2} = \frac{n^2 + n}{2}= O(n^2)$
+\end{center}
