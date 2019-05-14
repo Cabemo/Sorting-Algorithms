@@ -5,6 +5,7 @@ points: 12pts
 date: 09/05/2019
 header-includes:
 	- \usepackage{tikz}
+	- \usepackage{cancel}
 	- \usetikzlibrary{automata,positioning}
 	- \definecolor{activeNode}{RGB}{0, 127, 255}
 	- \definecolor{change}{RGB}{255, 0, 0}
@@ -520,3 +521,67 @@ Lo anterior termina convirtiendose en : \break
 
 $\displaystyle\sum_{i=0}^{n - 1} i = \frac{n (n - 1)}{2} = \frac{n^2 + n}{2}= O(n^2)$
 \end{center}
+
+\newpage
+
+# Quick Sort
+
+Supongamos que tenemos la siguiente tupla
+
+$$A=(a_0, a_1, a_2, \cdots a_n)$$
+
+Tomamos una $a_i$ que corresponda a la mediana de la tupla y comparamos $a_i$ con cada elemento de la tupla tal que $i\ne j$. Finalmente, obtenemos dos k-tuplas tal que $k<n$ de la siguiente manera
+
+$$B=(a_j\mid a_j\le a_i)$$
+$$C=(a_j\mid a_j> a_i)$$
+
+Teniendo las tuplas resultantes aplicamos el mismo paso recursivamente a cada una. Por tanto, podemos expresar esta llamada recursiva a cada uno. Podemos expresar esta función recursiva de la siguiente manera.
+
+$$T(n)=T((n-1)-a)+T(a)+(n-1)$$
+
+Así mismo podemos representar esta función en un árbol recursivo
+
+\begin{center}
+\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto] 
+		\node [circle, draw] (1) {$n-1$};
+
+		\node [circle, draw, below of=1, left=20pt] (2) {$(n-1)-a_0$};
+		\node [circle, draw, below of=1, right=20pt] (3) {$a_0$};
+
+		\node [circle, draw, below of=2, left=20pt] (4) {$((n-1)-a_0)-a_1$};
+		\node [circle, draw, below of=2] (5) {$a_1$};
+		\node [circle, draw, below of=3] (6) {$a_0-a_2$};
+		\node [circle, draw, below of=3, right=30pt] (7) {$a_2$};
+
+		\node [circle, draw, below of=4, left=6pt] (8) {$1$};
+		\node [circle, draw, below of=4, right=6pt] (9) {$1$};
+		\node [circle, draw, below of=5, left=6pt] (10) {$1$};
+		\node [circle, draw, below of=5, right=6pt] (11) {$1$};
+		\node [circle, draw, below of=6, left=6pt] (12) {$\cdots$};
+		\node [circle, draw, below of=6, right=6pt] (13) {$1$};
+		\node [circle, draw, below of=7] (14) {$1$};
+		\node [circle, draw, below of=7, right=15pt] (15) {$1$};
+		
+		\path[->]
+		(1)
+			edge node {} (2)
+			edge node {} (3)
+		(2)
+			edge node {} (4)
+			edge node {} (5)
+		(3)
+			edge node {} (6)
+			edge node {} (7)
+		;
+	\end{tikzpicture}
+\end{center}
+
+Podemos ver que se forma la siguiente sumatoria por subniveles donde cada sumando es un nodo
+
+$$=(n-1)+((n-1)-a_0+a_0)+((((n-1)-a_0)-a_1)+a_1+(a_0-a_2)+a_2)+\cdots+1+1+1+1+\cdots+1+1+1$$
+$$=(n-1)+((n-1)-a_0+a_0)+((n-1)-a_0-a_1+a_1+a_0-a_2+a_2)+\cdots+1+1+1+1+\cdots+1+1+1$$
+$$=(n-1)+((n-1)\cancel{-a_0+a_0})+((n-1)\cancel{-a_0-a_1+a_1+a_0-a_2+a_2})+\cdots+\overbrace{1+1+1+1+\cdots+1+1+1}^{n-1}$$
+$$=(n-1)+(n-1)+(n-1)+\cdots+1\cdot (n-1)$$
+$$=\overbrace{(n-1)+(n-1)+(n-1)+\cdots+(n-1)}^{\log_2{n}+1}$$
+$$=(n-1)(\log_2{n}+1)$$
+$$=(n-1)\log_2{n}+(n-1)=O(n\log_2(n))$$
